@@ -30,23 +30,35 @@
 ;; there's an API which we can use to push stuff from your favourite
 ;; editor to your phone
 ;;
-;; This is just an experiment, any comments and suggestions are more
-;; than welcome.  At present calling `pb/send-region' interactively
-;; with a selection will send that selection with the user specified
-;; title to your android app
+;; At the moment this uses `grapnel' library for http requests. This
+;; is just an experiment, any comments and suggestions are more than
+;; welcome. Customize the variable `pb/api-key' in the group
+;; `pushbullet' to match your api-key. At present calling
+;; `pb/send-region' interactively with a selection will send that
+;; selection with the user specified title to your android app
 ;;; Code:
 
 (require 'grapnel)
 (require 'json)
 
-(defvar pushbullet-api-key ""
+(defgroup pushbullet nil
+  "An emacs pushbullet client"
+  :prefix "pb/"
+  :group 'applications)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Customization Variables ;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defcustom pb/api-key nil
   "API Key for your pushbullet account"
-  )
+  :type 'string
+  :group 'pushbullet)
 
 (defun pb/get-devices ()
   "Get the devices available for pushing data"
   (let ((grapnel-options
-        (concat "-u " pushbullet-api-key ":")))
+        (concat "-u " pb/api-key ":")))
     (grapnel-retrieve-url
      "https://www.pushbullet.com/api/devices"
      '((success . (lambda (res hdrs)
@@ -62,7 +74,7 @@
     pb/get-devices)
   (dolist (device_id pb/device-id-list)
     (let ((grapnel-options
-         (concat "-u " pushbullet-api-key ": ")
+         (concat "-u " pb/api-key ": ")
          ))
       (grapnel-retrieve-url
           "https://www.pushbullet.com/api/pushes"

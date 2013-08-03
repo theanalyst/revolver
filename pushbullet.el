@@ -79,8 +79,7 @@
       (grapnel-retrieve-url
           "https://www.pushbullet.com/api/pushes"
           `((success . (lambda (res hdrs)
-                         (message "success! pushed to device id:%s "
-                           device_id)))
+                         (message "success!")))
             (failure . (lambda (res hdrs) (message "failure! %s" hdrs)))
             (error . (lambda (res err) (message "err %s" err))))
           "POST"

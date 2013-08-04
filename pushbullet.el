@@ -36,6 +36,8 @@
 ;; `pushbullet' to match your api-key. At present calling
 ;; `pb/send-region' interactively with a selection will send that
 ;; selection with the user specified title to your android app
+;; and calling `pb/send-buffer' will send the whole contents of buffer
+;; to the app
 ;;; Code:
 
 (require 'grapnel)
@@ -107,6 +109,14 @@
   (let* ((selection (pb/select-region (region-beginning) (region-end))))
     (unless (= (length selection) 0)
       (pb/push-item selection "note" title))))
+
+(defun pb/send-buffer (buffer-name)
+  "Pushes the entire buffer as a note"
+  (interactive "bEnter the buffer to be pushed:")
+  (with-current-buffer buffer-name
+    (let ((selection (pb/select-region (point-min) (point-max))))
+    (unless (= (length selection) 0)
+      (pb/push-item selection "note" buffer-name)))))
 
 (provide 'pushbullet)
 ;;; pushbullet.el ends here

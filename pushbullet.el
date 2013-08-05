@@ -64,16 +64,15 @@
     (grapnel-retrieve-url
      "https://www.pushbullet.com/api/devices"
      '((success . (lambda (res hdrs)
-                    (setq pb/device-id-list (pb/extract-device-ids res))
-                    (message "%s" pb/device-id-list)))
+                    (setq pb/device-id-list (pb/extract-device-ids res))))
        (failure . (lambda (res hdrs) (message "Failure %s" res)))
        (error . (lambda (res err) (message "err %s" err))))
    "GET")))
 
 (defun pb/push-item (text type title)
   "Pushes the item"
-  (unless (boundp 'pb/device-id-list)
-    pb/get-devices)
+  (unless pb/device-id-list
+    (pb/get-devices))
   (dolist (device_id pb/device-id-list)
     (let ((grapnel-options
          (concat "-u " pb/api-key ": ")

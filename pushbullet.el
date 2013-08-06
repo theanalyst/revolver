@@ -57,6 +57,9 @@
   :type 'string
   :group 'pushbullet)
 
+(defvar pb/device-id-list nil
+  "list of device_ids. Atm this includes only your devices")
+
 (defun pb/get-devices ()
   "Get the devices available for pushing data"
   (let ((grapnel-options

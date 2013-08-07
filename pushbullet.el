@@ -94,12 +94,22 @@
               ("body" . ,text))
             ))))
 
-(defun pb/extract-device-ids (devices-json)
+(defun pb/extract-device-ids (tag devices-json)
   "Make a list of device ids from the received json response"
   (let* ((json-object-type 'alist)
          (pb-json-response (json-read-from-string devices-json)))
     (mapcar (lambda (x) (cdr (assoc 'id  x)))
-            (cdr (assoc 'devices pb-json-response)))))
+            (cdr (assoc tag pb-json-response)))))
+
+(defun pb/extract-devices-self (devices-json)
+  (pb/extract-device-ids 'devices devices-json))
+
+(defun pb/extract-devices-shared (devices-json)
+  (pb/extract-device-ids 'shared_devices devices-json))
+
+(defun pb/extract-devices-all (devices-json)
+  (nconc (pb/extract-my-devices devices-json)
+	  (pb/extract-shared-devices devices-json)))
 
 (defun pb/select-region (start end)
   "Selects a region from start to end"

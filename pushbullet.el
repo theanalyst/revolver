@@ -114,20 +114,22 @@
   "Selects a region from start to end"
   (buffer-substring-no-properties start end))
 
-(defun pb/send-region (title)
+(defun pb/send-region (all? title)
 "Pushes a region as an article"
-  (interactive "sEnter title for this push:" )
-  (let* ((selection (pb/select-region (region-beginning) (region-end))))
+  (interactive "P\ns Enter title for this push:" )
+  (let* ((selection (pb/select-region (region-beginning) (region-end)))
+	 (devices (pb/get-device-ids all?)))
     (unless (= (length selection) 0)
-      (pb/push-item selection "note" title))))
+      (pb/push-item devices selection "note" title))))
 
-(defun pb/send-buffer (buffer-name)
+(defun pb/send-buffer (all? buffer-name)
   "Pushes the entire buffer as a note"
-  (interactive "bEnter the buffer to be pushed:")
+  (interactive "P\nb Enter the buffer to be pushed:")
   (with-current-buffer buffer-name
-    (let ((selection (pb/select-region (point-min) (point-max))))
+    (let ((selection (pb/select-region (point-min) (point-max)))
+	  (devices (pb/get-device-ids all?)))
     (unless (= (length selection) 0)
-      (pb/push-item selection "note" buffer-name)))))
+      (pb/push-item devices selection "note" buffer-name)))))
 
 (provide 'pushbullet)
 ;;; pushbullet.el ends here

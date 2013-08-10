@@ -66,10 +66,10 @@
         (concat "-u " pb/api-key ":")))
     (grapnel-retrieve-url
      "https://www.pushbullet.com/api/devices"
-     '((success . (lambda (res hdrs)
+     `((success . (lambda (res hdrs)
                     (setq pb/device-id-list (pb/extract-devices-all res))))
-       (failure . (lambda (res hdrs) (message "Failure %s" res)))
-       (error . (lambda (res err) (message "err %s" err))))
+       (failure . ,(apply-partially 'pb/notify "failure"))
+       (error .  ,(apply-partially 'pb/notify "error")))
    "GET")))
 
 (defun pb/push-item (devices text type title)
@@ -80,10 +80,9 @@
          ))
       (grapnel-retrieve-url
           "https://www.pushbullet.com/api/pushes"
-          `((success . (lambda (res hdrs)
-                         (message "success!")))
-            (failure . (lambda (res hdrs) (message "failure! %s" hdrs)))
-            (error . (lambda (res err) (message "err %s" err))))
+          `((success . (lambda (res hdrs) (message "success!")))
+            (failure . ,(apply-partially 'pb/notify "failure"))
+            (error . ,(apply-partially 'pb/notify "error")))
           "POST"
             nil
             `(("device_id" . ,(number-to-string device_id))

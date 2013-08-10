@@ -30,5 +30,9 @@
 					  }
 					  ]
 			}"))
-    (should (equal '(19137) (pb/extract-device-ids devices-json)))))
+    (should (equal '(19137) (pb/extract-device-ids 'devices devices-json)))
+    (should (equal '((devices . (19137))
+		     (shared  . (7)))
+		   (pb/extract-devices-all devices-json))
+	    )))
 

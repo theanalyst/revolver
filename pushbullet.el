@@ -106,13 +106,11 @@
 		    (shared   . ,(pb/extract-device-ids 'shared_devices devices-json)))))
     devices))
 
-(defun pb/get-devices(all?)
-  (unless pb/device-id-list
-    pb/get-devices)
+(defun pb/get-device-ids (all?)
+  (unless pb/device-id-list (pb/get-devices))
   (if all? (nconc (cdr (assoc 'devices pb/device-id-list))
 		  (cdr (assoc 'shared pb/device-id-list)))
     (cdr (assoc 'devices pb/device-id-list))))
-
 
 (defun pb/select-region (start end)
   "Selects a region from start to end"

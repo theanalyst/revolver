@@ -58,7 +58,7 @@
   :group 'pushbullet)
 
 (defvar pb/device-id-list nil
-  "list of device_ids. Atm this includes only your devices")
+  "Alist of device_ids.")
 
 (defun pb/get-devices ()
   "Get the devices available for pushing data"
@@ -67,7 +67,7 @@
     (grapnel-retrieve-url
      "https://www.pushbullet.com/api/devices"
      '((success . (lambda (res hdrs)
-                    (setq pb/device-id-list (pb/extract-device-ids res))))
+                    (setq pb/device-id-list (pb/extract-devices-all res))))
        (failure . (lambda (res hdrs) (message "Failure %s" res)))
        (error . (lambda (res err) (message "err %s" err))))
    "GET")))
@@ -101,15 +101,10 @@
     (mapcar (lambda (x) (cdr (assoc 'id  x)))
             (cdr (assoc tag pb-json-response)))))
 
-(defun pb/extract-devices-self (devices-json)
-  (pb/extract-device-ids 'devices devices-json))
-
-(defun pb/extract-devices-shared (devices-json)
-  (pb/extract-device-ids 'shared_devices devices-json))
-
 (defun pb/extract-devices-all (devices-json)
-  (nconc (pb/extract-my-devices devices-json)
-	  (pb/extract-shared-devices devices-json)))
+  (let* ((devices `((devices  . ,(pb/extract-device-ids 'devices devices-json))
+		    (shared   . ,(pb/extract-device-ids 'shared_devices devices-json)))))
+    devices))
 
 (defun pb/select-region (start end)
   "Selects a region from start to end"

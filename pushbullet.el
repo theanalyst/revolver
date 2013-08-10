@@ -94,7 +94,7 @@
 
 (defun pb/notify (msg &optional res hdrs)
   "Notifies the result of operation"
-  (if (res) (message "%s!! %s"  msg res)
+  (if res (message "%s!! %s"  msg res)
     (message "%s!" msg)))
 
 (defun pb/extract-device-ids (tag devices-json)

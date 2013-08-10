@@ -92,6 +92,11 @@
               ("body" . ,text))
             ))))
 
+(defun pb/notify (msg &optional res hdrs)
+  "Notifies the result of operation"
+  (if (res) (message "%s!! %s"  msg res)
+    (message "%s!" msg)))
+
 (defun pb/extract-device-ids (tag devices-json)
   "Make a list of device ids from the received json response"
   (let* ((json-object-type 'alist)

@@ -72,11 +72,9 @@
        (error . (lambda (res err) (message "err %s" err))))
    "GET")))
 
-(defun pb/push-item (text type title)
+(defun pb/push-item (devices text type title)
   "Pushes the item"
-  (unless pb/device-id-list
-    (pb/get-devices))
-  (dolist (device_id pb/device-id-list)
+  (dolist (device_id devices)
     (let ((grapnel-options
          (concat "-u " pb/api-key ": ")
          ))

@@ -110,8 +110,8 @@
 
 (defun pb/get-device-ids (all?)
   (unless pb/device-id-list (pb/get-devices))
-  (if all? (nconc (cdr (assoc 'devices pb/device-id-list))
-		  (cdr (assoc 'shared pb/device-id-list)))
+  (if all? (append (cdr (assoc 'devices pb/device-id-list))
+		 (cdr (assoc 'shared pb/device-id-list)))
     (cdr (assoc 'devices pb/device-id-list))))
 
 (defun pb/select-region (start end)

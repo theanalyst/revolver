@@ -69,12 +69,11 @@
 
 (defun pb/get-devices ()
   "Get the devices available for pushing data"
-  (let ((grapnel-options
-        (concat "-u " pb/api-key ":")))
+  (let ((grapnel-options (concat "-u " pb/api-key ":")))
     (grapnel-retrieve-url
      "https://www.pushbullet.com/api/devices"
      `((success . (lambda (res hdrs)
-                    (setq pb/device-id-list (pb/extract-devices-all res))))
+		    (setq pb/device-id-list (pb/extract-devices-all res))))
        (failure . ,(apply-partially 'pb/notify "failure"))
        (error .  ,(apply-partially 'pb/notify "error")))
    "GET")))
@@ -82,21 +81,18 @@
 (defun pb/push-item (devices text type title)
   "Pushes the item"
   (dolist (device_id devices)
-    (let ((grapnel-options
-         (concat "-u " pb/api-key ": ")
-         ))
+    (let ((grapnel-options (concat "-u " pb/api-key ": ")))
       (grapnel-retrieve-url
-          "https://www.pushbullet.com/api/pushes"
-          `((success . (lambda (res hdrs) (message "success!")))
-            (failure . ,(apply-partially 'pb/notify "failure"))
-            (error . ,(apply-partially 'pb/notify "error")))
-          "POST"
-            nil
-            `(("device_id" . ,(number-to-string device_id))
-              ("type" . ,type)
-              ("title" . ,title)
-              ("body" . ,text))
-            ))))
+	  "https://www.pushbullet.com/api/pushes"
+	  `((success . (lambda (res hdrs) (message "success!")))
+	    (failure . ,(apply-partially 'pb/notify "failure"))
+	    (error . ,(apply-partially 'pb/notify "error")))
+	  "POST"
+	    nil
+	    `(("device_id" . ,(number-to-string device_id))
+	      ("type" . ,type)
+	      ("title" . ,title)
+	      ("body" . ,text))))))
 
 (defun pb/notify (msg &optional res hdrs)
   "Notifies the result of operation"
@@ -106,9 +102,9 @@
 (defun pb/extract-device-ids (tag devices-json)
   "Make a list of device ids from the received json response"
   (let* ((json-object-type 'alist)
-         (pb-json-response (json-read-from-string devices-json)))
+	 (pb-json-response (json-read-from-string devices-json)))
     (mapcar (lambda (x) (cdr (assoc 'id  x)))
-            (cdr (assoc tag pb-json-response)))))
+	    (cdr (assoc tag pb-json-response)))))
 
 (defun pb/extract-devices-all (devices-json)
   (let* ((devices `((devices  . ,(pb/extract-device-ids 'devices devices-json))

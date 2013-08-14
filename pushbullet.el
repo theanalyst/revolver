@@ -4,8 +4,8 @@
 
 ;; Author: Abhishek L <abhishekl.2006@gmail.com>
 ;; URL: http://www.github.com/theanalyst/revolver
-;; Version: 0.1.0
-
+;; Version: 0.2.0
+;; Package-Requires:((grapnel "0.5.2"))
 ;; This file is not a part of GNU Emacs
 ;;
 ;; Keywords: convenience
@@ -38,6 +38,13 @@
 ;; selection with the user specified title to your android app
 ;; and calling `pb/send-buffer' will send the whole contents of buffer
 ;; to the app
+
+;; History
+
+;; 0.1.0 - Initial release.
+
+;; 0.2.0 - Adding support for shared devices
+
 ;;; Code:
 
 (require 'grapnel)
@@ -114,6 +121,7 @@
 		 (cdr (assoc 'shared pb/device-id-list)))
     (cdr (assoc 'devices pb/device-id-list))))
 
+;;;###autoload
 (defun pb/send-note (start end all? title)
   "Pushes the selection as a note. Title defaults to buffer-name
    but is accepted as a user input. If there is no selection, the

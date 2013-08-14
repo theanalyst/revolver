@@ -114,26 +114,21 @@
 		 (cdr (assoc 'shared pb/device-id-list)))
     (cdr (assoc 'devices pb/device-id-list))))
 
-(defun pb/select-region (start end)
-  "Selects a region from start to end"
-  (buffer-substring-no-properties start end))
-
-(defun pb/send-region (all? title)
-"Pushes a region as an article"
-  (interactive "P\ns Enter title for this push:" )
-  (let* ((selection (pb/select-region (region-beginning) (region-end)))
+(defun pb/send-note (start end all? title)
+  "Pushes the selection as a note. Title defaults to buffer-name
+   but is accepted as a user input. If there is no selection, the
+   entire buffer is sent. With a prefix arg send to shared
+   devices as well "
+  (interactive
+   (let ((push-title
+	  (read-string "Title for the push :" (buffer-name) nil (buffer-name))))
+     (if (mark)
+	 (list (region-beginning) (region-end) current-prefix-arg push-title)
+       (list (point-min) (point-max) current-prefix-arg push-title))))
+  (let ((selection (buffer-substring-no-properties start end))
 	 (devices (pb/get-device-ids all?)))
     (unless (= (length selection) 0)
       (pb/push-item devices selection "note" title))))
-
-(defun pb/send-buffer (all? buffer-name)
-  "Pushes the entire buffer as a note"
-  (interactive "P\nb Enter the buffer to be pushed:")
-  (with-current-buffer buffer-name
-    (let ((selection (pb/select-region (point-min) (point-max)))
-	  (devices (pb/get-device-ids all?)))
-    (unless (= (length selection) 0)
-      (pb/push-item devices selection "note" buffer-name)))))
 
 (provide 'pushbullet)
 ;;; pushbullet.el ends here

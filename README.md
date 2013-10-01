@@ -8,6 +8,8 @@ Revolver
   from desktops and browsers etc. to your Android phone. Luckily
   Pushbullet provides an [API](https://pushbullet.com/api) which we
   can use to push items from your favorite text editor to your phone.
+  HTTP Requests are created using the
+  [grapnel](https://github.com/leathekd/grapnel) library
 
 ## Usage
 
@@ -15,9 +17,5 @@ Revolver
   account
 
   At present after loading `pushbullet.el`, selecting a region and
-  calling M-x `pb/send-region` will prompt for a post title which will
-  send the selection along with the title as a note to your android
-  device.
-
-  I'm very much a rookie when it comes to Emacs Lisp,
-  comments\free PRs\brickbats are always welcome.
+  calling M-x `pb/send-note` will send the region as a note prompting
+  for a title, if region is inactive entire buffer is sent

@@ -126,7 +126,7 @@
   (interactive
    (let ((push-title
 	  (read-string "Title for the push :" (buffer-name) nil (buffer-name))))
-     (if (mark)
+     (if mark-active
 	 (list (region-beginning) (region-end) current-prefix-arg push-title)
        (list (point-min) (point-max) current-prefix-arg push-title))))
   (let ((selection (buffer-substring-no-properties start end))

@@ -5,7 +5,7 @@
 ;; Author: Abhishek L <abhishekl.2006@gmail.com>
 ;; URL: http://www.github.com/theanalyst/revolver
 ;; Version: 0.2.0
-;; Package-Requires:((grapnel "0.5.2"))
+;; Package-Requires:((grapnel "0.5.2") (json "1.3"))
 ;; This file is not a part of GNU Emacs
 ;;
 ;; Keywords: convenience

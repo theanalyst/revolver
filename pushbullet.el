@@ -1,14 +1,14 @@
-;;; pushbullet.el ---
+;;; pushbullet.el --- Emacs client for the PushBullet Android app
 
-;; Copyright (C) 2013  Abhishek L <abhishekl.2006@gmail.com>
+;; Copyright (C) 2013  Abhishek L
 
 ;; Author: Abhishek L <abhishekl.2006@gmail.com>
-;; URL: http://www.github.com/theanalyst/revolver
+;; URL: http://www.github.com/theanalyst/pushbullet.el
 ;; Version: 0.2.0
 ;; Package-Requires:((grapnel "0.5.2") (json "1.3"))
-;; This file is not a part of GNU Emacs
-;;
 ;; Keywords: convenience
+
+;; This file is not a part of GNU Emacs
 
 ;;; License:
 
@@ -39,7 +39,7 @@
 ;; and calling `pb/send-buffer' will send the whole contents of buffer
 ;; to the app
 
-;; History
+;;; History:
 
 ;; 0.1.0 - Initial release.
 
@@ -135,4 +135,5 @@
       (pb/push-item devices selection "note" title))))
 
 (provide 'pushbullet)
+
 ;;; pushbullet.el ends here

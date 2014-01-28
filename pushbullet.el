@@ -67,11 +67,13 @@
 (defvar pb/device-id-list nil
   "Alist of device_ids.")
 
+(defvar pb/api-url "https://api.pushbullet.com/api/")
+
 (defun pb/get-devices ()
   "Get the devices available for pushing data"
   (let ((grapnel-options (concat "-u " pb/api-key ":")))
     (grapnel-retrieve-url
-     "https://www.pushbullet.com/api/devices"
+     (concat pb/api-url "devices")
      `((success . (lambda (res hdrs)
 		    (setq pb/device-id-list (pb/extract-devices-all res))))
        (failure . ,(apply-partially 'pb/notify "failure"))
@@ -83,7 +85,7 @@
   (dolist (device_id devices)
     (let ((grapnel-options (concat "-u " pb/api-key ": ")))
       (grapnel-retrieve-url
-	  "https://www.pushbullet.com/api/pushes"
+       (concat pb/api-url "pushes")
 	  `((success . (lambda (res hdrs) (message "success!")))
 	    (failure . ,(apply-partially 'pb/notify "failure"))
 	    (error . ,(apply-partially 'pb/notify "error")))

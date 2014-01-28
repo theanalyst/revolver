@@ -120,7 +120,7 @@
     (cdr (assoc 'devices pb/device-id-list))))
 
 ;;;###autoload
-(defun pb/send-note (start end all? title)
+(defun pushbullet (start end all? title)
   "Pushes the selection as a note. Title defaults to buffer-name
    but is accepted as a user input. If there is no selection, the
    entire buffer is sent. With a prefix arg send to shared

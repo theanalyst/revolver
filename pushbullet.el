@@ -76,8 +76,8 @@
      (concat pb/api-url "devices")
      `((success . (lambda (res hdrs)
 		    (setq pb/device-id-list (pb/extract-devices-all res))))
-       (failure . ,(apply-partially 'pb/notify "failure"))
-       (error .  ,(apply-partially 'pb/notify "error")))
+       (failure . pb/failure-callback)
+       (error .  pb/error-callback))
    "GET")))
 
 (defun pb/push-item (devices text type title)
@@ -87,8 +87,8 @@
       (grapnel-retrieve-url
        (concat pb/api-url "pushes")
 	  `((success . (lambda (res hdrs) (message "success!")))
-	    (failure . ,(apply-partially 'pb/notify "failure"))
-	    (error . ,(apply-partially 'pb/notify "error")))
+	    (failure . pb/failure-callback)
+	    (error .  pb/error-callback))
 	  "POST"
 	    nil
 	    `(("device_id" . ,(number-to-string device_id))
@@ -96,10 +96,11 @@
 	      ("title" . ,title)
 	      ("body" . ,text))))))
 
-(defun pb/notify (msg &optional res hdrs)
-  "Notifies the result of operation"
-  (if res (message "%s!! %s"  msg res)
-    (message "%s!" msg)))
+(defun pb/error-callback (res hdrs)
+  (message "curl error! %s" hdrs))
+
+(defun pb/failure-callback (msg &optional res hdrs)
+  (message "request failure! %s" hdrs))
 
 (defun pb/extract-device-ids (tag devices-json)
   "Make a list of device ids from the received json response"

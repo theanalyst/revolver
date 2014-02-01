@@ -1,7 +1,7 @@
 (require 'ert)
 (require 'pushbullet)
 
-(ert-deftest pb/extract-device-ids ()
+(ert-deftest pb/json-extract ()
   (let ((devices-json "	{
 			\"devices\":[
 				   {
@@ -30,7 +30,7 @@
 					  }
 					  ]
 			}"))
-    (should (equal '(19137) (pb/extract-device-ids 'devices devices-json)))
+    (should (equal '(19137) (pb/json-extract 'id 'devices devices-json)))
     (should (equal '((devices . (19137))
 		     (shared  . (7)))
 		   (pb/extract-devices-all devices-json))

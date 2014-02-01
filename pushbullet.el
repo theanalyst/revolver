@@ -5,7 +5,7 @@
 ;; Author: Abhishek L <abhishekl.2006@gmail.com>
 ;; URL: http://www.github.com/theanalyst/pushbullet.el
 ;; Version: 0.2.0
-;; Package-Requires:((grapnel "0.5.2") (json "1.3"))
+;; Package-Requires:((grapnel "0.5.2") (json "1.3") (ht "2.0"))
 ;; Keywords: convenience
 
 ;; This file is not a part of GNU Emacs
@@ -49,6 +49,7 @@
 
 (require 'grapnel)
 (require 'json)
+(require 'ht)
 
 (defgroup pushbullet nil
   "An emacs pushbullet client"
@@ -64,8 +65,8 @@
   :type 'string
   :group 'pushbullet)
 
-(defvar pb/device-id-list nil
-  "Alist of device_ids.")
+(defvar pb/device-id-table nil
+  "A hash table of device_ids.")
 
 (defvar pb/api-url "https://api.pushbullet.com/api/")
 
@@ -109,16 +110,20 @@
 	    (cdr (assoc tag pb-json-response)))))
 
 (defun pb/device-ids-from-json (json)
-  `(("id" . ,(pb/json-extract 'id 'devices json))
-    ("shared" . ,(pb/json-extract 'id 'shared json))))
+  (ht ("devices" (pb/json-extract 'iden 'devices json))
+      ("shared" (pb/json-extract 'iden 'shared json))))
 
 (defun pb/fill-device-id-list (res hdrs)
-  (setq pb/device-id-list (pb/device-ids-from-json res)))
+  (setq pb/device-id-table (pb/device-ids-from-json res)))
 
 (defun pb/ensure-device-ids ()
-  "Checks if pb/device-id-list is set, else set it"
-  (unless pb/device-id-list
+  "Checks if pb/device-id-table is set, else set it"
+  (unless pb/device-id-table
     (pb/get-devices)))
+
+;;;###autoload
+(defun pb/clear-devices ()
+  (ht-clear pb/device-id-table))
 
 ;;;###autoload
 (defun pushbullet (start end all? title)
@@ -133,11 +138,10 @@
 	 (list (region-beginning) (region-end) current-prefix-arg push-title)
        (list (point-min) (point-max) current-prefix-arg push-title))))
   (let ((selection (buffer-substring-no-properties start end))
-	(devices  (progn
-		    (pb/ensure-device-ids)
-		    (if all?
-			(mapcar 'cdr pb/device-id-list)
-		      (cdr (assoc 'devices pb/device-id-list))))))
+	(devices  nil))
+    (pb/ensure-device-ids)
+    (setq devices (if all? (ht-values pb/device-id-table)
+		    (ht-get pb/device-id-table "devices")))
     (unless (= (length selection) 0)
       (pb/push-item devices selection "note" title))))
 

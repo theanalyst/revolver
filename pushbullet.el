@@ -74,8 +74,7 @@
   (let ((grapnel-options (concat "-u " pb/api-key ":")))
     (grapnel-retrieve-url
      (concat pb/api-url "devices")
-     `((success . (lambda (res hdrs)
-		    (setq pb/device-id-list (pb/extract-devices-all res))))
+     `((success . pb/fill-device-id-list)
        (failure . pb/failure-callback)
        (error .  pb/error-callback))
    "GET")))
@@ -102,23 +101,24 @@
 (defun pb/failure-callback (msg &optional res hdrs)
   (message "request failure! %s" hdrs))
 
-(defun pb/extract-device-ids (tag devices-json)
-  "Make a list of device ids from the received json response"
+(defun pb/json-extract (key tag devices-json)
+  "Extracts the tag and key from a given json"
   (let* ((json-object-type 'alist)
 	 (pb-json-response (json-read-from-string devices-json)))
-    (mapcar (lambda (x) (cdr (assoc 'id  x)))
+    (mapcar (lambda (x) (cdr (assoc key  x)))
 	    (cdr (assoc tag pb-json-response)))))
 
-(defun pb/extract-devices-all (devices-json)
-  (let* ((devices `((devices  . ,(pb/extract-device-ids 'devices devices-json))
-		    (shared   . ,(pb/extract-device-ids 'shared_devices devices-json)))))
-    devices))
+(defun pb/device-ids-from-json (json)
+  `(("id" . ,(pb/json-extract 'id 'devices json))
+    ("shared" . ,(pb/json-extract 'id 'shared json))))
 
-(defun pb/get-device-ids (all?)
-  (unless pb/device-id-list (pb/get-devices))
-  (if all? (append (cdr (assoc 'devices pb/device-id-list))
-		 (cdr (assoc 'shared pb/device-id-list)))
-    (cdr (assoc 'devices pb/device-id-list))))
+(defun pb/fill-device-id-list (res hdrs)
+  (setq pb/device-id-list (pb/device-ids-from-json res)))
+
+(defun pb/ensure-device-ids ()
+  "Checks if pb/device-id-list is set, else set it"
+  (unless pb/device-id-list
+    (pb/get-devices)))
 
 ;;;###autoload
 (defun pushbullet (start end all? title)
@@ -133,7 +133,11 @@
 	 (list (region-beginning) (region-end) current-prefix-arg push-title)
        (list (point-min) (point-max) current-prefix-arg push-title))))
   (let ((selection (buffer-substring-no-properties start end))
-	 (devices (pb/get-device-ids all?)))
+	(devices  (progn
+		    (pb/ensure-device-ids)
+		    (if all?
+			(mapcar 'cdr pb/device-id-list)
+		      (cdr (assoc 'devices pb/device-id-list))))))
     (unless (= (length selection) 0)
       (pb/push-item devices selection "note" title))))
 

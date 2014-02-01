@@ -90,7 +90,7 @@
 	    (error .  pb/error-callback))
 	  "POST"
 	    nil
-	    `(("device_id" . ,(number-to-string device_id))
+	    `(("device_iden" . ,device_id)
 	      ("type" . ,type)
 	      ("title" . ,title)
 	      ("body" . ,text))))))

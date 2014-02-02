@@ -34,3 +34,7 @@
                         }"))
     (should (equal '(19137) (pb/json-extract 'iden 'devices devices-json)))
     (should (equal '(7) (pb/json-extract 'iden 'shared_devices devices-json)))))
+
+(ert-deftest pb/clear-devices ()
+  (pb/clear-devices)
+  (should (equal nil (ht-items pb/device-id-table))))

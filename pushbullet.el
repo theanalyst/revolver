@@ -123,6 +123,7 @@
 
 ;;;###autoload
 (defun pb/clear-devices ()
+  (interactive)
   (ht-clear pb/device-id-table))
 
 ;;;###autoload

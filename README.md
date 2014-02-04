@@ -17,5 +17,17 @@ Revolver
   account
 
   At present after loading `pushbullet.el`, selecting a region and
-  calling M-x `pb/send-note` will send the region as a note prompting
+  calling M-x `pushbullet` will send the region as a note prompting
   for a title, if region is inactive entire buffer is sent
+
+## Note for Shared Devices
+
+  Ideally `C-u M-x pushbullet` should be able to push to shared
+  devices, however after recent api changes, I'm not recieving
+  anything in the shared devices in the json response. If this is
+  working for anyone, do let me know.
+
+## TODO
+
+- Write tests, tests are good
+- Convert org-mode structure into a todo list and send

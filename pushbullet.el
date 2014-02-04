@@ -32,7 +32,7 @@
 ;;
 ;; At the moment this uses `grapnel' library for http requests. This
 ;; is just an experiment, any comments and suggestions are more than
-;; welcome. Customize the variable `pb/api-key' in the group
+;; welcome. Customize the variable `pushbullet-api-key' in the group
 ;; `pushbullet' to match your api-key. At present calling
 ;; `pushbullet' interactively with a selection will send that
 ;; selection with the user specified title to your android app
@@ -58,7 +58,7 @@
 ;;; Customization Variables ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defcustom pb/api-key nil
+(defcustom pushbullet-api-key nil
   "API Key for your pushbullet account"
   :type 'string
   :group 'pushbullet)
@@ -120,7 +120,7 @@
     (pb/get-devices)))
 
 ;;;###autoload
-(defun pb/clear-devices ()
+(defun pushbullet-clear-devices ()
   (interactive)
   (ht-clear pb/device-id-table))
 

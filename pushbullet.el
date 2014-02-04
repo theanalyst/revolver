@@ -4,7 +4,7 @@
 
 ;; Author: Abhishek L <abhishekl.2006@gmail.com>
 ;; URL: http://www.github.com/theanalyst/pushbullet.el
-;; Version: 0.2.0
+;; Version: 0.5.0
 ;; Package-Requires:((grapnel "0.5.2") (json "1.3") (ht "2.0"))
 ;; Keywords: convenience
 
@@ -34,16 +34,14 @@
 ;; is just an experiment, any comments and suggestions are more than
 ;; welcome. Customize the variable `pb/api-key' in the group
 ;; `pushbullet' to match your api-key. At present calling
-;; `pb/send-region' interactively with a selection will send that
+;; `pushbullet' interactively with a selection will send that
 ;; selection with the user specified title to your android app
-;; and calling `pb/send-buffer' will send the whole contents of buffer
+;; if region is inactive it will send the whole contents of buffer
 ;; to the app
 
 ;;; History:
 
-;; 0.1.0 - Initial release.
-
-;; 0.2.0 - Adding support for shared devices
+;; 0.5.0 - Initial release
 
 ;;; Code:
 

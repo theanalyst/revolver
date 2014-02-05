@@ -5,7 +5,7 @@
 ;; Author: Abhishek L <abhishekl.2006@gmail.com>
 ;; URL: http://www.github.com/theanalyst/pushbullet.el
 ;; Version: 0.5.0
-;; Package-Requires:((grapnel "0.5.2") (json "1.3") (ht "2.0"))
+;; Package-Requires:((grapnel "0.5.2") (json "1.2") (ht "2.0"))
 ;; Keywords: convenience
 
 ;; This file is not a part of GNU Emacs

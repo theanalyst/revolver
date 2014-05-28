@@ -66,7 +66,7 @@
 (defvar pb/device-id-table nil
   "A hash table of device_ids.")
 
-(defvar pb/api-url "https://api.pushbullet.com/api/")
+(defvar pb/api-url "https://api.pushbullet.com/v2/")
 
 (defun pb/get-devices ()
   "Get the devices available for pushing data"

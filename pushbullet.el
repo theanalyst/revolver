@@ -2,9 +2,9 @@
 
 ;; Copyright (C) 2013  Abhishek L
 
-;; Author: Abhishek L <abhishekl.2006@gmail.com>
+;; Author: Abhishek L <abhishek.lekshmanan@gmail.com>
 ;; URL: http://www.github.com/theanalyst/pushbullet.el
-;; Version: 0.5.0
+;; Version: 0.5.1
 ;; Package-Requires:((grapnel "0.5.2") (json "1.2") (ht "2.0"))
 ;; Keywords: convenience
 
@@ -42,7 +42,8 @@
 ;;; History:
 
 ;; 0.5.0 - Initial release
-
+;; 0.5.1 - Update api url to new api url
+;;       - Fix wrong variable name `pb/api-key'
 ;;; Code:
 
 (require 'grapnel)

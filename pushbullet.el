@@ -70,7 +70,7 @@
 
 (defun pb/get-devices ()
   "Get the devices available for pushing data"
-  (let ((grapnel-options (concat "-u " pb/api-key ":")))
+  (let ((grapnel-options (concat "-u " pushbullet-api-key ":")))
     (grapnel-retrieve-url
      (concat pb/api-url "devices")
      `((success . pb/fill-device-id-list)
@@ -81,7 +81,7 @@
 (defun pb/push-item (devices text type title)
   "Pushes the item"
   (dolist (device_id devices)
-    (let ((grapnel-options (concat "-u " pb/api-key ": ")))
+    (let ((grapnel-options (concat "-u " pushbullet-api-key ": ")))
       (grapnel-retrieve-url
        (concat pb/api-url "pushes")
 	  `((success . (lambda (res hdrs) (message "success!")))

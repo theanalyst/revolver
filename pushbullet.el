@@ -51,7 +51,7 @@
 
 (defgroup pushbullet nil
   "An emacs pushbullet client"
-  :prefix "pb/"
+  :prefix "pushbullet"
   :group 'applications)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -121,6 +121,7 @@
 
 ;;;###autoload
 (defun pushbullet-clear-devices ()
+  "Clear the device id cache, useful if new devices are added"
   (interactive)
   (ht-clear pb/device-id-table))
 

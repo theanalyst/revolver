@@ -64,8 +64,8 @@
   :type 'string
   :group 'pushbullet)
 
-(defvar pb/device-id-table nil
-  "A hash table of device_ids.")
+(defvar pb/device-ids nil
+  "A list of device_ids.")
 
 (defvar pb/api-url "https://api.pushbullet.com/v2/")
 
@@ -109,42 +109,37 @@
 	    (cdr (assoc tag pb-json-response)))))
 
 (defun pb/device-ids-from-json (json)
-  (ht ("devices" (pb/json-extract 'iden 'devices json))
-      ("shared" (pb/json-extract 'iden 'shared json))))
+  (pb/json-extract 'iden 'devices json))
 
 (defun pb/fill-device-id-list (res hdrs)
-  (setq pb/device-id-table (pb/device-ids-from-json res)))
+  (setq pb/device-ids (pb/device-ids-from-json res)))
 
 (defun pb/ensure-device-ids ()
   "Checks if pb/device-id-table is set, else set it"
-  (unless pb/device-id-table
+  (unless pb/device-ids
     (pb/get-devices)))
 
 ;;;###autoload
 (defun pushbullet-clear-devices ()
   "Clear the device id cache, useful if new devices are added"
   (interactive)
-  (ht-clear pb/device-id-table))
+  (setq pb/device-ids nil))
 
 ;;;###autoload
-(defun pushbullet (start end all? title)
-  "Pushes the selection as a note. Title defaults to buffer-name
-   but is accepted as a user input. If there is no selection, the
-   entire buffer is sent. With a prefix arg send to shared
-   devices as well "
+(defun pushbullet (start end title)
+  "Pushes the selection as a note to all registered devices. Title
+   defaults to buffer-name but is accepted as a user input. If
+   there is no selection, the entire buffer is sent."
   (interactive
    (let ((push-title
 	  (read-string "Title for the push :" (buffer-name) nil (buffer-name))))
      (if mark-active
-	 (list (region-beginning) (region-end) current-prefix-arg push-title)
-       (list (point-min) (point-max) current-prefix-arg push-title))))
-  (let ((selection (buffer-substring-no-properties start end))
-	(devices  nil))
+	 (list (region-beginning) (region-end) push-title)
+       (list (point-min) (point-max) push-title))))
+  (let ((selection (buffer-substring-no-properties start end)))
     (pb/ensure-device-ids)
-    (setq devices (if all? (ht-values pb/device-id-table)
-		    (ht-get pb/device-id-table "devices")))
     (unless (= (length selection) 0)
-      (pb/push-item devices selection "note" title))))
+      (pb/push-item pb/device-ids selection "note" title))))
 
 (provide 'pushbullet)
 

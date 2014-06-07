@@ -14,18 +14,13 @@ Revolver
 ## Usage
 
   Set the variable `pushbullet-api-key` to the API key for your
-  account
-
+  account. Since the key has access to your pushes, please ensure 
+  that you don't push the value of the key to github or any other 
+  public place. 
+  
   At present after loading `pushbullet.el`, selecting a region and
   calling M-x `pushbullet` will send the region as a note prompting
   for a title, if region is inactive entire buffer is sent
-
-## Note for Shared Devices
-
-  Ideally `C-u M-x pushbullet` should be able to push to shared
-  devices, however after recent api changes, I'm not recieving
-  anything in the shared devices in the json response. If this is
-  working for anyone, do let me know.
 
 ## TODO
 

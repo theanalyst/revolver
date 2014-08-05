@@ -3,7 +3,7 @@
 ;; Copyright (C) 2013  Abhishek L
 
 ;; Author: Abhishek L <abhishek.lekshmanan@gmail.com>
-;; URL: http://www.github.com/theanalyst/pushbullet.el
+;; URL: http://www.github.com/theanalyst/revolver
 ;; Version: 0.5.1
 ;; Package-Requires:((grapnel "0.5.2") (json "1.2"))
 ;; Keywords: convenience

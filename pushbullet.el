@@ -130,7 +130,10 @@
 (defun pushbullet (start end title)
   "Pushes the selection as a note to all registered devices. Title
    defaults to buffer-name but is accepted as a user input. If
-   there is no selection, the entire buffer is sent."
+   there is no selection, the entire buffer is sent.
+
+  For this to work you must have set `pushbullet-api-key' to the
+  api key of your pushbullet account."
   (interactive
    (let ((push-title
 	  (read-string "Title for the push :" (buffer-name) nil (buffer-name))))
